@@ -20,7 +20,7 @@ print('Tokenize finished')
 
 '''
 Remove stopwords and some common words like 'employee','ee'.
-Also only remain words which are all characters using s.isalpha()
+Also only retain words which are all characters using s.isalpha()
 '''
 remove_list = ['employee'] + stopwords.words('english') + ['ee']
 narrative_cleanup = []

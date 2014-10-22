@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import Counter
 from numpy import *
 
 
@@ -10,7 +10,7 @@ def createC1(dataSet):
     C1 = []
     for transaction in dataSet:
         for item in transaction:
-            if not [item] in C1:
+            if [item] not in C1:
                 C1.append([item])            
     C1.sort()
     # use frozenset so we can use it as a key in the dict
@@ -18,7 +18,7 @@ def createC1(dataSet):
 
 
 def scanD(D, Ck, minSupport):
-    ssCnt = defaultdict(frozenset)
+    ssCnt = Counter()
     for tid in D:
         for can in Ck:
             if can.issubset(tid):
@@ -73,7 +73,7 @@ def generateRules(L, supportData, minConf=0.7):  # supportData is a dict coming 
     for i in range(1, len(L)):  # only get the sets with two or more items
         for freqSet in L[i]:
             H1 = [frozenset([item]) for item in freqSet]
-            if (i > 1):
+            if i > 1:
                 rulesFromConseq(freqSet, H1, supportData, bigRuleList, minConf)
             else:
                 calcConf(freqSet, H1, supportData, bigRuleList, minConf)
@@ -81,7 +81,7 @@ def generateRules(L, supportData, minConf=0.7):  # supportData is a dict coming 
 
 
 def calcConf(freqSet, H, supportData, brl, minConf=0.7):
-    prunedH = [] # create new list to return
+    prunedH = []  # create new list to return
     for conseq in H:
         conf = supportData[freqSet]/supportData[freqSet-conseq]  # calc confidence
         if conf >= minConf: 

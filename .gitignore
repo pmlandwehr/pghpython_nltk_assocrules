@@ -1,5 +1,9 @@
 # IntelliJ Project Files
 .idea/*
 
-# Data file
+# Raw Data File
 Accidents.txt
+
+# Generated Data Files
+all_narrative_cleanup.txt
+all_narrative_tagged.txt

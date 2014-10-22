@@ -3,7 +3,7 @@ import nltk
 from nltk.corpus import stopwords
 import pickle
 
-accidents = pd.read_csv('Accidents.txt', sep='|')
+accidents = pd.read_csv('Accidents.txt', sep='|', encoding='latin1')
 accidents.columns = [x.lower() for x in accidents.columns]
 
 '''
@@ -11,7 +11,7 @@ Tokenize narrative
 '''
 accidents_N = []
 for i in range(len(accidents)):
-    if type(accidents['narrative'][i]) == str:
+    if isinstance(accidents['narrative'][i], str):
         accidents_N.append(nltk.word_tokenize(accidents['narrative'][i]))
     else:
         accidents_N.append('')
@@ -32,7 +32,7 @@ if accidents_N != '':
 else:
     narrative_cleanup.append('')
 
-print 'Removed stopwords finished'
+print('Removed stopwords finished')
 
 '''
 Use pickle to save list in txt file

@@ -1,3 +1,9 @@
+# Uncertain
+__pycache__/*
+
+# iPython Notebook
+.ipynb_checkpoints/*
+
 # IntelliJ Project Files
 .idea/*
 

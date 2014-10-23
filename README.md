@@ -16,4 +16,4 @@ To use the repository,
 4. Run `python generate_narrative_tag_pickle.py` to create the pickle `all_narrative_tagged.txt`
 5. Open `nltk_assocrules_pghpython.ipynb` in the IPython Notebook
 
-Code in this repository was developed by [Haoxian He](https://bitbucket.org/ethan1989111) (https://bitbucket.org/ethan1989111) and [Louis Luangkesor)](https://github.com/lluang) (https://github.com/lluang)
+Code in this repository was developed by [Haoxian He](https://bitbucket.org/ethan1989111) (https://bitbucket.org/ethan1989111) and [Louis Luangkesor](https://github.com/lluang) (https://github.com/lluang)

@@ -1,5 +1,5 @@
 from collections import Counter
-from numpy import *
+from numpy import arange
 
 
 def loadDataSet():
@@ -18,37 +18,34 @@ def createC1(dataSet):
 
 
 def scanD(D, Ck, minSupport):
-    ssCnt = Counter()
+    ss_counter = Counter()
     for tid in D:
         for can in Ck:
             if can.issubset(tid):
-                ssCnt[can] += 1
-    numItems = float(len(D))
-    retList = []
-    supportData = {}
-    for key in ssCnt:
-        support = ssCnt[key]/numItems
-        if support >= minSupport:
-            retList.insert(0, key)
-        supportData[key] = support
-    return retList, supportData
+                ss_counter[can] += 1
+    num_items = len(D)
+
+    support_data = {key: ss_counter[key]/num_items for key in ss_counter}
+    ret_list = [key for key in ss_counter if ss_counter[key]/num_items >= minSupport][::-1]
+
+    return ret_list, support_data
 
 
 def aprioriGen(Lk, k):  # creates Ck
     retList = []
     lenLk = len(Lk)
-    for i in range(lenLk):
-        for j in range(i+1, lenLk): 
-            L1 = list(Lk[i])[:k-2]
-            L2 = list(Lk[j])[:k-2]
-            L1.sort()
-            L2.sort()
+    for i in arange(lenLk):
+        l_1 = list(Lk[i])[:k-2]
+        l_1.sort()
+        for j in arange(i+1, lenLk):
+            l_2 = list(Lk[j])[:k-2]
+            l_2.sort()
             # print("L1:", L1)
             # print("L2:", L2)
             # compare the first items to avoid duplicate
             # if first k-2 elements are equal, namely, besides the last item,
             # all the items of the two sets are the same!
-            if L1 == L2:
+            if l_1 == l_2:
                 retList.append(Lk[i] | Lk[j])  # set union
     return retList
 
@@ -70,7 +67,7 @@ def apriori(dataSet, minSupport=0.5):
 
 def generateRules(L, supportData, minConf=0.7):  # supportData is a dict coming from scanD
     bigRuleList = []
-    for i in range(1, len(L)):  # only get the sets with two or more items
+    for i in arange(1, len(L)):  # only get the sets with two or more items
         for freqSet in L[i]:
             H1 = [frozenset([item]) for item in freqSet]
             if i > 1:

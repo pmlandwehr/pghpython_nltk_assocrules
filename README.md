@@ -7,11 +7,13 @@ It uses the Accident Injuries data set relased as [Open Government Data](http://
 
 To use the repository, 
 
-1.  Download the Accident Injuries data set and unzip it in this directory.
-2.  Run 'python generate_clean_narrative_pickel.py' to create the pickle 'all_narrative_cleanup.txt'
-3.  Run 'python generate_narrative_tag_pickle.py' to create the pickle 'all_narrative_tagged.txt'
-4.  Open 'nltk_assocrules_pghpython.ipynb' in the IPython Notebook
+1.  Download the Accident Injuries data set and unzip it in this directory. The accident injuries file is encoded as 'latin1'.
+2.  If you haven't used nltk before, after installing you'll need to download some corpora... 
+    2.1. Open up python and type `import nltk; nltk.download()` to bring up the downloader GUI.
+    2.2. From the `Corpora` pane, select and download the `stopwords` corpus.
+    2.3. From the `Models` pane, download the `maxent_treebank_pos_tagger` and `punkt` modules.
+3.  Run 'python generate_clean_narrative_pickle.py' to create the pickle 'all_narrative_cleanup.txt'
+4.  Run 'python generate_narrative_tag_pickle.py' to create the pickle 'all_narrative_tagged.txt'
+5.  Open 'nltk_assocrules_pghpython.ipynb' in the IPython Notebook
 
 Code in this repository was developed by Haoxian He (https://bitbucket.org/ethan1989111) and Louis Luangkesorn (https://github.com/lluang)
-
-

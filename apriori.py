@@ -7,14 +7,14 @@ def loadDataSet():
 
 
 def createC1(dataSet):
-    C1 = []
+    c_1 = set()
     for transaction in dataSet:
         for item in transaction:
-            if [item] not in C1:
-                C1.append([item])            
-    C1.sort()
+            c_1.add(item)
+    c_1 = list(list(item) for item in c_1)
+    c_1.sort()
     # use frozenset so we can use it as a key in the dict
-    return [frozenset(x) for x in C1]
+    return [frozenset(x) for x in c_1]
 
 
 def scanD(D, Ck, minSupport):

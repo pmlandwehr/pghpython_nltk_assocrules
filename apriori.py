@@ -32,12 +32,12 @@ def scanD(D, Ck, minSupport):
 
 
 def aprioriGen(Lk, k):  # creates Ck
-    retList = []
-    lenLk = len(Lk)
-    for i in arange(lenLk):
+    ret_list = []
+    len_lk = len(Lk)
+    for i in arange(len_lk):
         l_1 = list(Lk[i])[:k-2]
         l_1.sort()
-        for j in arange(i+1, lenLk):
+        for j in arange(i+1, len_lk):
             l_2 = list(Lk[j])[:k-2]
             l_2.sort()
             # print("L1:", L1)
@@ -46,46 +46,47 @@ def aprioriGen(Lk, k):  # creates Ck
             # if first k-2 elements are equal, namely, besides the last item,
             # all the items of the two sets are the same!
             if l_1 == l_2:
-                retList.append(Lk[i] | Lk[j])  # set union
-    return retList
+                ret_list.append(Lk[i] | Lk[j])  # set union
+    return ret_list
 
 
 def apriori(dataSet, minSupport=0.5):
-    C1 = createC1(dataSet)
-    D = [set(x) for x in dataSet]
-    L1, supportData = scanD(D, C1, minSupport)
-    L = [L1]
+    c_1 = createC1(dataSet)
+    d = [set(x) for x in dataSet]
+    l_1, support_data = scanD(d, c_1, minSupport)
+    l = [l_1]
     k = 2
-    while len(L[k-2]) > 0:
-        Ck = aprioriGen(L[k-2], k)
-        Lk, supK = scanD(D, Ck, minSupport)  # scan DB to get Lk
-        supportData.update(supK)
-        L.append(Lk)
+    while len(l[k-2]) > 0:
+        c_k = aprioriGen(l[k-2], k)
+        l_k, sup_k = scanD(d, c_k, minSupport)  # scan DB to get Lk
+        support_data.update(sup_k)
+        l.append(l_k)
         k += 1
-    return L, supportData
+    return l, support_data
 
 
 def generateRules(L, supportData, minConf=0.7):  # supportData is a dict coming from scanD
-    bigRuleList = []
-    for i in arange(1, len(L)):  # only get the sets with two or more items
-        for freqSet in L[i]:
-            H1 = [frozenset([item]) for item in freqSet]
-            if i > 1:
-                rulesFromConseq(freqSet, H1, supportData, bigRuleList, minConf)
-            else:
-                calcConf(freqSet, H1, supportData, bigRuleList, minConf)
-    return bigRuleList         
+    big_rule_list = []
+    for freq_set in L[1]:
+        calcConf(freq_set, [frozenset([item]) for item in freq_set],
+                 supportData, big_rule_list, minConf)
+
+    for i in arange(2, len(L)):  # only get the sets with two or more items
+        for freq_set in L[i]:
+            rulesFromConseq(freq_set, [frozenset([item]) for item in freq_set],
+                            supportData, big_rule_list, minConf)
+    return big_rule_list
 
 
 def calcConf(freqSet, H, supportData, brl, minConf=0.7):
-    prunedH = []  # create new list to return
+    pruned_h = []  # create new list to return
     for conseq in H:
         conf = supportData[freqSet]/supportData[freqSet-conseq]  # calc confidence
         if conf >= minConf: 
             print(freqSet - conseq, '-->', conseq, 'conf:', conf)
             brl.append((freqSet - conseq, conseq, conf))
-            prunedH.append(conseq)
-    return prunedH
+            pruned_h.append(conseq)
+    return pruned_h
 
 
 def rulesFromConseq(freqSet, H, supportData, brl, minConf=0.7):

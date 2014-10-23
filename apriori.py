@@ -93,17 +93,20 @@ def calcConf(freqSet, H, supportData, brl, minConf=0.7):
 def rulesFromConseq(freqSet, H, supportData, brl, minConf=0.7):
     print("freqSet:", freqSet)
     
-    Hmp1 = calcConf(freqSet, H, supportData, brl, minConf)
-    
-    m = len(Hmp1[0])
-    print("m:", m, "Hmp1 now:", Hmp1)
+    hm_plus_1 = calcConf(freqSet, H, supportData, brl, minConf)
+
+    m = len(hm_plus_1[0])
+    print("m:", m, "Hmp1 now:", hm_plus_1)
+
     if len(freqSet) > (m + 1):  # try further merging
-        Hmp1 = aprioriGen(Hmp1, m+1)  # create Hm+1 new candidates
-    print('Hmp1:', Hmp1)
-    Hmp1 = calcConf(freqSet, Hmp1, supportData, brl, minConf)
-    print('Hmp1 after calculate:', Hmp1)
-    if len(Hmp1) > 1:  # need at least two sets to merge
-        rulesFromConseq(freqSet, Hmp1, supportData, brl, minConf)
+        hm_plus_1 = aprioriGen(hm_plus_1, m+1)  # create Hm+1 new candidates
+    print('Hmp1:', hm_plus_1)
+
+    hm_plus_1 = calcConf(freqSet, hm_plus_1, supportData, brl, minConf)
+    print('Hmp1 after calculate:', hm_plus_1)
+
+    if len(hm_plus_1) > 1:  # need at least two sets to merge
+        rulesFromConseq(freqSet, hm_plus_1, supportData, brl, minConf)
 
 
 def main():

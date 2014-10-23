@@ -11,7 +11,7 @@ def createC1(dataSet):
     for transaction in dataSet:
         for item in transaction:
             c_1.add(item)
-    c_1 = list(list(item) for item in c_1)
+    c_1 = [[item] for item in c_1]
     c_1.sort()
     # use frozenset so we can use it as a key in the dict
     return [frozenset(x) for x in c_1]
@@ -21,12 +21,12 @@ def scanD(D, Ck, minSupport):
     ss_counter = Counter()
     for tid in D:
         for can in Ck:
-            if can.issubset(tid):
+            if can <= tid:
                 ss_counter[can] += 1
     num_items = len(D)
 
     support_data = {key: ss_counter[key]/num_items for key in ss_counter}
-    ret_list = [key for key in ss_counter if ss_counter[key]/num_items >= minSupport][::-1]
+    ret_list = [key for key in support_data if support_data[key] >= minSupport][::-1]
 
     return ret_list, support_data
 
@@ -56,6 +56,7 @@ def apriori(dataSet, minSupport=0.5):
     l_1, support_data = scanD(d, c_1, minSupport)
     l = [l_1]
     k = 2
+
     while len(l[k-2]) > 0:
         c_k = aprioriGen(l[k-2], k)
         l_k, sup_k = scanD(d, c_k, minSupport)  # scan DB to get Lk
@@ -92,7 +93,6 @@ def calcConf(freqSet, H, supportData, brl, minConf=0.7):
 
 def rulesFromConseq(freqSet, H, supportData, brl, minConf=0.7):
     print("freqSet:", freqSet)
-    
     hm_plus_1 = calcConf(freqSet, H, supportData, brl, minConf)
 
     m = len(hm_plus_1[0])
